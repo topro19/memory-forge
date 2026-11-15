@@ -1,8 +1,10 @@
 import type { NextConfig } from "next";
 
+const isGithubPages = process.env.DEPLOY_TARGET === 'gh-pages';
+
 const nextConfig: NextConfig = {
   output: 'export',
-  basePath: process.env.NEXT_PUBLIC_BASE_PATH || '',
+  basePath: isGithubPages ? '/memory-forge' : '',
   images: {
     unoptimized: true,
   },
