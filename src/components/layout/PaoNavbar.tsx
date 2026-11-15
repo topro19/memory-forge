@@ -11,6 +11,7 @@ import {
   Database,
   Keyboard,
   LayoutDashboard,
+  Trophy,
 } from 'lucide-react';
 
 export interface PaoNavbarProps {
@@ -33,6 +34,7 @@ export function PaoNavbar({
   const navItems = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
     { id: 'train', label: 'Train Hub', icon: Layers },
+    { id: 'deck_sequence', label: 'Deck Sequence', icon: Trophy },
     { id: 'triad_challenge', label: '3-Card Triad', icon: Brain },
     { id: 'srs_review', label: 'SRS Review', icon: Zap, badge: dueCount > 0 ? dueCount : undefined },
     { id: 'mistakes', label: 'Mistakes', icon: AlertTriangle, badge: mistakesCount > 0 ? mistakesCount : undefined },

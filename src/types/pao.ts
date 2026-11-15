@@ -115,6 +115,19 @@ export interface SpeedChallengeScore {
   score: number;
 }
 
+export interface DeckSequenceLog {
+  id: string;
+  timestamp: number;
+  deckSize: number;
+  correctCount: number;
+  accuracy: number;
+  memorizeTimeMs: number;
+  recallTimeMs: number;
+  firstErrorIndex: number | null;
+  longestStreak: number;
+  triadMode: boolean;
+}
+
 export interface AppSettings {
   includeJokers: boolean;
   enableHints: boolean;
@@ -135,6 +148,7 @@ export interface PAOStoreData {
   dailyActivity: Record<string, DailyActivityLog>;
   threeCardLogs: ThreeCardSessionLog[];
   speedScores: SpeedChallengeScore[];
+  deckSequenceLogs?: DeckSequenceLog[];
   settings: AppSettings;
   streak: {
     current: number;

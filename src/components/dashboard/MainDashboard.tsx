@@ -19,6 +19,7 @@ import {
   ChevronRight,
   ShieldAlert,
   Sparkles,
+  Trophy,
 } from 'lucide-react';
 
 interface MainDashboardProps {
@@ -181,6 +182,14 @@ export function MainDashboard({
             >
               <Brain className="w-4 h-4 text-sky-400" />
               <span>3-Card Triad</span>
+            </button>
+
+            <button
+              onClick={() => onNavigateToTab('deck_sequence')}
+              className="px-4 py-3 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 text-amber-300 border border-amber-500/40 text-sm font-semibold flex items-center gap-2 transition shadow-md shadow-amber-500/10"
+            >
+              <Trophy className="w-4 h-4 text-amber-400" />
+              <span>Deck Sequence</span>
             </button>
           </div>
         </div>

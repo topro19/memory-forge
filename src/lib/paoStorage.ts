@@ -3,6 +3,7 @@ import {
   AppSettings,
   CardSRSData,
   DailyActivityLog,
+  DeckSequenceLog,
   MistakeLog,
   PAOCard,
   PAOComponent,
@@ -62,6 +63,7 @@ export function getInitialStoreData(): PAOStoreData {
     dailyActivity: {},
     threeCardLogs: [],
     speedScores: [],
+    deckSequenceLogs: [],
     settings: DEFAULT_SETTINGS,
     streak: {
       current: 0,
@@ -106,6 +108,7 @@ export function loadStore(): PAOStoreData {
       dailyActivity: parsed.dailyActivity || {},
       threeCardLogs: Array.isArray(parsed.threeCardLogs) ? parsed.threeCardLogs : [],
       speedScores: Array.isArray(parsed.speedScores) ? parsed.speedScores : [],
+      deckSequenceLogs: Array.isArray(parsed.deckSequenceLogs) ? parsed.deckSequenceLogs : [],
       settings: { ...DEFAULT_SETTINGS, ...(parsed.settings || {}) },
       streak: parsed.streak || { current: 0, lastActiveDate: null, longest: 0 },
     };
@@ -298,6 +301,53 @@ export function logSpeedScore(
   };
 
   store.speedScores = [newRecord, ...store.speedScores.slice(0, 49)];
+  saveStore(store);
+  return store;
+}
+
+export function logDeckSequenceSession(
+  deckSize: number,
+  correctCount: number,
+  accuracy: number,
+  memorizeTimeMs: number,
+  recallTimeMs: number,
+  firstErrorIndex: number | null,
+  longestStreak: number,
+  triadMode: boolean
+): PAOStoreData {
+  const store = loadStore();
+  const sessionLog: DeckSequenceLog = {
+    id: `seq_${Date.now()}`,
+    timestamp: Date.now(),
+    deckSize,
+    correctCount,
+    accuracy,
+    memorizeTimeMs,
+    recallTimeMs,
+    firstErrorIndex,
+    longestStreak,
+    triadMode,
+  };
+
+  const logs = store.deckSequenceLogs || [];
+  store.deckSequenceLogs = [sessionLog, ...logs.slice(0, 49)];
+
+  const today = getTodayKey();
+  if (!store.dailyActivity[today]) {
+    store.dailyActivity[today] = {
+      date: today,
+      cardsStudied: 0,
+      correctCount: 0,
+      totalCount: 0,
+      timeSpentMs: 0,
+    };
+  }
+  store.dailyActivity[today].timeSpentMs += (memorizeTimeMs + recallTimeMs);
+  store.dailyActivity[today].cardsStudied += deckSize;
+  store.dailyActivity[today].correctCount += correctCount;
+  store.dailyActivity[today].totalCount += deckSize;
+
+  updateStreak(store);
   saveStore(store);
   return store;
 }

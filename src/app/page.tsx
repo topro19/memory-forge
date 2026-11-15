@@ -14,6 +14,7 @@ import {
   logMistake,
   logThreeCardSession,
   logSpeedScore,
+  logDeckSequenceSession,
   updateCardAssociations,
   updateSettings,
   resetAllDataToDefault,
@@ -25,6 +26,7 @@ import { KeyboardShortcutsModal } from '@/components/layout/KeyboardShortcutsMod
 import { MainDashboard } from '@/components/dashboard/MainDashboard';
 import { TrainingHub, TrainingModeKey } from '@/components/modes/TrainingHub';
 import { TriadImageChallenge } from '@/components/modes/TriadImageChallenge';
+import { DeckSequenceChallenge } from '@/components/modes/DeckSequenceChallenge';
 import { SrsReviewStudio } from '@/components/modes/SrsReviewStudio';
 import { MistakesView } from '@/components/mistakes/MistakesView';
 import { StatsView } from '@/components/stats/StatsView';
@@ -132,6 +134,32 @@ export default function MemoryForgeApp() {
         incorrect,
         skipped,
         avgResponseTimeMs
+      );
+      setStore(updated);
+    },
+    []
+  );
+
+  const handleLogSequenceSession = useCallback(
+    (
+      deckSize: number,
+      correctCount: number,
+      accuracy: number,
+      memorizeTimeMs: number,
+      recallTimeMs: number,
+      firstErrorIndex: number | null,
+      longestStreak: number,
+      triadMode: boolean
+    ) => {
+      const updated = logDeckSequenceSession(
+        deckSize,
+        correctCount,
+        accuracy,
+        memorizeTimeMs,
+        recallTimeMs,
+        firstErrorIndex,
+        longestStreak,
+        triadMode
       );
       setStore(updated);
     },
@@ -248,6 +276,15 @@ export default function MemoryForgeApp() {
             onRecordReview={handleRecordReview}
             onLogMistake={handleLogMistake}
             onLogSpeedScore={handleLogSpeedScore}
+            onBackToDashboard={() => setCurrentTab('dashboard')}
+          />
+        )}
+
+        {currentTab === 'deck_sequence' && (
+          <DeckSequenceChallenge
+            store={store}
+            onLogSequenceSession={handleLogSequenceSession}
+            onLogMistake={handleLogMistake}
             onBackToDashboard={() => setCurrentTab('dashboard')}
           />
         )}

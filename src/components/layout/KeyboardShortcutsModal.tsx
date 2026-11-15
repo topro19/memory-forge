@@ -13,8 +13,10 @@ export function KeyboardShortcutsModal({ isOpen, onClose }: KeyboardShortcutsMod
   if (!isOpen) return null;
 
   const shortcuts = [
-    { key: 'Space', desc: 'Reveal answer / Flip playing card' },
-    { key: 'Enter', desc: 'Submit answer / Proceed to next card' },
+    { key: 'Space', desc: 'Reveal answer / Advance card in Deck Sequence' },
+    { key: 'Enter', desc: 'Submit answer / Finish memorizing sequence' },
+    { key: '→ / ←', desc: 'Step forward / backward in Deck Sequence' },
+    { key: 'H', desc: 'Toggle PAO hints / cues during memorization' },
     { key: '1', desc: 'Rate "Again" (Forgot — 1 min interval)' },
     { key: '2', desc: 'Rate "Hard" (Struggled — 10 min interval)' },
     { key: '3', desc: 'Rate "Good" (Remembered — 1 day+ interval)' },
